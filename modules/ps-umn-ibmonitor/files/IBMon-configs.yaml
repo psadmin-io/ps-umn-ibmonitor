@@ -1,24 +1,26 @@
 ---
+# For configuration options/samples, see
+#   https://umn-peoplesoft.github.io/IBMonitorService/database_config
 root:
-  emailUser: email@address.com
-  emailPassword: passw0rd!
-  emailReplyTo: email@address.com
-  emailHost: smtp.email.com
-  emailPort: '587'
-  onCallFile: "/path/file"
-  debugMode: 'ON'
-  dbType: Oracle
+  emailUser: dummy-emailUser
+  emailPassword: dummy-emailPassword
+  emailReplyTo: dummy-emailReplyTo
+  emailHost: dummy-emailHost
+  emailPort: dummy-emailPort
+  onCallFile: dummy-onCallFile
+  debugMode: 'dummy-debugMode'
+  dbType: dummy-dbType
   database:
-    databaseName: db1
-    host: host:1521/db1.world
-    user: dbuser
-    password: dbPass0wrd!
+    databaseName: dummy-databaseName
+    host: dummy-host
+    user: dummy-user
+    password: dummy-password
     dbSchema: SYSADM
     sleepTime: '5'
     defaultMonitorTime: '0'
     defaultStatusToCheck: '0,5,6'
     defaultRetryCount: '0'
-    defaultNotifyTo: notify@email.com
+    defaultNotifyTo: dummy-defaultNotifyTo
     defaultNotifyCC: ''
     defaultNotifyInterval: '60'
     downTimeStartDay: '1'
@@ -34,11 +36,11 @@ root:
     - monitorName: PERSON_BASIC_SYNC Publications
       serviceOperation: PERSON_BASIC_SYNC
       operationType: PubContract
-      publishNode: YOUR_PUBLISHING_NODE
-      subscribeNode: TARGET_NODE1,TARGET_NODEx
+      publishNode: dummy-publishNode
+      subscribeNode: dummy-subscribeNode
       status: '0,5,6'
       action: Notfy
-      notifyTo: notify@email.com
+      notifyTo: dummy-notifyTo
       notifyCC: ''
       startTime: '06:00'
       endTime: '22:00'
@@ -49,7 +51,7 @@ root:
       notifyInterval: '10'
       notifyIntervalOffHours: '720'
       escalation:
-      - notifyTo: escalate@email.com
+      - notifyTo: dummy-escalation_notifyTo
         escalationDelay: '0'
         emailAdditions:
           emailLine:
@@ -57,7 +59,7 @@ root:
           - line2:THIS IS ONLY A TEST
           - type:Incident
           - category:Applications
-      - notifyTo: escalate2@email.com
+      - notifyTo: dummy-escalation2_notifyTo
         escalationDelay: '10'
         emailAdditions:
           emailLine:
@@ -68,11 +70,11 @@ root:
     - monitorName: PERSON_BASIC_SYNC Subscriptions
       serviceOperation: PERSON_BASIC_SYNC
       operationType: SubContract
-      publishNode: PUBNODE1,PUBNODEx
-      subscribeNode: YOUR_SUBSCRIBING_NODE
+      publishNode: dummy-publishNode
+      subscribeNode: dummy-subscribeNode
       status: '0,5,6'
       action: Notify Each
-      notifyTo: email@address.com
+      notifyTo: dummy-notifyTo
       notifyCC: ''
       startTime: '06:00'
       endTime: '22:00'
