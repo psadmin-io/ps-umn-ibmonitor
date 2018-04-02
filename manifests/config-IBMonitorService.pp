@@ -1,6 +1,4 @@
 $downloadSrc      = 'https://umn-peoplesoft.github.io/IBMonitorService/IBMonitorService.zip'
-$downloadDir      = '/psoft/IBMon'
-$configFile       = "$downloadDir/IBMonitorService/IBMon-configs.yaml"
 $emailFrom        = 'email@address.com' 
 $defaultNotifyTo  = 'notify@email.com' 
 $escalateTo       = '' 
@@ -8,6 +6,17 @@ $onCallFile       = ''
 $debugMode        = 'OFF'
 $dbUser           = 'SYSADM'
 $dbPswd           = 'P@ssw0rd!'
+$downloadDirWin   = "c:\\psoft\\IBMon"
+$downloadDirLin   = '/psoft/IBMon'
+
+if $::osFamily == 'windows' {
+  $downloadDir    = $downloadDirWin
+  $configFile     = "$downloadDir\\IBMon-configs.yaml"
+}
+else {
+  $downloadDir    = $downloadDirLin
+  $configFile     = "$downloadDir/IBMon-configs.yaml"
+}
 
 # Hiera lookups
 $dbType           = hiera('db_platform')
@@ -24,24 +33,29 @@ $appserver_domain_list = hiera('appserver_domain_list')
 # Create download directory
 file {"$downloadDir":
   ensure  =>  directory,
-  #owner   =>  "${::id}",
-  #group   =>  "${::gid}",
 }
 
-# Download IBMonitor
-exec {"download-IBMonitor":
-  command =>  "wget --quiet --no-check-certificate $downloadSrc",
-  cwd     =>  "$downloadDir",
-  path    =>  ['/bin', '/sbin', '/usr/bin'],
-  creates =>  "$downloadDir/IBMonitorService.zip",
-}
+if $::osFamily == 'windows' {
+  #TODO: Windows commands
+} 
+else {
+  # Linux - download and unzip
 
-# Extract IBMonitorService zip
-exec {"extract-IBMonitorService.zip":
-  command =>  "unzip IBMonitorService.zip",
-  cwd     =>  "$downloadDir",
-  path    =>  ['/bin', '/sbin', '/usr/bin'],
-  creates =>  "$downloadDir/IBMonitorService/bin",
+  # Download IBMonitor
+  exec {"download-IBMonitor":
+    command =>  "wget --quiet --no-check-certificate $downloadSrc",
+    cwd     =>  "$downloadDir",
+    path    =>  ['/bin', '/sbin', '/usr/bin'],
+    creates =>  "$downloadDir/IBMonitorService.zip",
+  }
+
+  # Extract IBMonitorService zip
+  exec {"extract-IBMonitorService.zip":
+    command =>  "unzip IBMonitorService.zip",
+    cwd     =>  "$downloadDir",
+    path    =>  ['/bin', '/sbin', '/usr/bin'],
+    creates =>  "$downloadDir/IBMonitorService/bin",
+  }
 }
 
 #TODO: should we just deploy yaml? xml? jason? Or all?
@@ -174,11 +188,18 @@ $appserver_domain_list.each | $domain_name, $appserver_domain_info | {
       line    =>  "  emailPort: ${smtpPort}",
   }
 }
-# Start/Stop IBMonitor Service
-# TODO: Uncomment/update if we want this, otherwise remove
-#service {"IBMonitorService":
-#  ensure  =>  running,
-#  start   =>  "sudo nohup $downloadDir/IBMonitorService/bin/IBMonitorService $configFile 2>/dev/null &",
-#  stop    =>  "sudo pkill -f IBMon",
-#  status  =>  "sudo pgrep -f IBMon",
-#}
+
+# Start the service 
+if $::osFamily == 'windows' {
+  #TODO: Windows commands
+  # Create a windows service and start it
+} 
+else {
+  # Linx - Start/Stop IBMonitor Service
+  #service {"IBMonitorService":
+  #  ensure  =>  running,
+  #  start   =>  "cd /psoft/IBMon && sudo nohup IBMonitorService/bin/IBMonitorService /psoft/IBMon/IBMon-configs.yaml &",
+  #  stop    =>  "sudo pkill -f IBMon",
+  #  status  =>  "sudo pgrep -f IBMon",
+  }
+}
