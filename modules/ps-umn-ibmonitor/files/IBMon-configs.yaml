@@ -1,0 +1,85 @@
+---
+# For configuration options/samples, see
+#   https://umn-peoplesoft.github.io/IBMonitorService/database_config
+root:
+  emailUser: dummy-emailUser
+  emailPassword: dummy-emailPassword
+  emailReplyTo: dummy-emailReplyTo
+  emailHost: dummy-emailHost
+  emailPort: dummy-emailPort
+  onCallFile: dummy-onCallFile
+  debugMode: 'dummy-debugMode'
+  dbType: dummy-dbType
+  database:
+    databaseName: dummy-databaseName
+    host: dummy-host
+    user: dummy-user
+    password: dummy-password
+    dbSchema: SYSADM
+    sleepTime: '5'
+    defaultMonitorTime: '0'
+    defaultStatusToCheck: '0,5,6'
+    defaultRetryCount: '0'
+    defaultNotifyTo: dummy-defaultNotifyTo
+    defaultNotifyCC: ''
+    defaultNotifyInterval: '60'
+    downTimeStartDay: '1'
+    downTimeStart: '6:00'
+    downTimeEndDay: '1'
+    downTimeEnd: '12:00'
+    downTimeFrequency: '7'
+    defaultNotifyIntervalOffHours: '720'
+    startTimeOffHours: '19:00'
+    endTimeOffHours: '7:00'
+    domainStatus: 'ON'
+    monitorEvent:
+    - monitorName: PERSON_BASIC_SYNC Publications
+      serviceOperation: PERSON_BASIC_SYNC
+      operationType: PubContract
+      publishNode: dummy-publishNode
+      subscribeNode: dummy-subscribeNode
+      status: '0,5,6'
+      action: Notfy
+      notifyTo: dummy-notifyTo
+      notifyCC: ''
+      startTime: '06:00'
+      endTime: '22:00'
+      alertSubject: Person Basic Sync Publication Issues in Application.
+      alertText: Problems found with Person Basic Sync Publications in Application.
+      timeToCheck: '0'
+      retryCount: '0'
+      notifyInterval: '10'
+      notifyIntervalOffHours: '720'
+      escalation:
+      - notifyTo: dummy-escalation_notifyTo
+        escalationDelay: '0'
+        emailAdditions:
+          emailLine:
+          - line1:Description of Issue
+          - line2:THIS IS ONLY A TEST
+          - type:Incident
+          - category:Applications
+      - notifyTo: dummy-escalation2_notifyTo
+        escalationDelay: '10'
+        emailAdditions:
+          emailLine:
+          - line1:Description of Issue - Unresolved for 10 minutes
+          - line2:THIS IS ONLY A TEST
+          - type:Incident
+          - category:Applications
+    - monitorName: PERSON_BASIC_SYNC Subscriptions
+      serviceOperation: PERSON_BASIC_SYNC
+      operationType: SubContract
+      publishNode: dummy-publishNode
+      subscribeNode: dummy-subscribeNode
+      status: '0,5,6'
+      action: Notify Each
+      notifyTo: dummy-notifyTo
+      notifyCC: ''
+      startTime: '06:00'
+      endTime: '22:00'
+      alertSubject: Person Basic Sync Subscription Issues in Application.
+      alertText: Problems found with Person Basic Sync Subscriptions in Application.
+      timeToCheck: '0'
+      notifyInterval: '60'
+      notifyIntervalOffHours: '720'
