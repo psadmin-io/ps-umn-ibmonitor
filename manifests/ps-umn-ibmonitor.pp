@@ -30,9 +30,20 @@ $appserver_domain_list = hiera('appserver_domain_list')
 # Deploy IB Monitor
 ##############################################
 
-# Create download directory
+# Create download directory if it doesn't already exist
 file {"$downloadDir":
   ensure  =>  directory,
+}
+
+if $::osFamily == 'windows' {
+}
+else {
+  # Linux - install Java 1.8 if it's not already installed
+  exec {"install-java":
+    command =>  "yum install -y java-1.8.0",
+    path    =>  ['/bin', '/sbin', '/usr/bin'],
+    unless  =>  "which java",
+  }
 }
 
 if $::osFamily == 'windows' {
@@ -73,10 +84,10 @@ file {"IBMon-configs.yaml":
 
 # Configure lines in IBMon-configs.yaml
 
-file_line {"IBMon-configs.yaml-emailReployTo":
+file_line {"IBMon-configs.yaml-emailReplyTo":
     path    =>  "$configFile",
     match   =>  'dummy-emailReplyTo',
-    line    =>  "  emailReployTo: ${emailFrom}",
+    line    =>  "  emailReplyTo: ${emailFrom}",
 }
 
 file_line {"IBMon-configs.yaml-onCallFile":
@@ -196,10 +207,10 @@ if $::osFamily == 'windows' {
 } 
 else {
   # Linx - Start/Stop IBMonitor Service
-  #service {"IBMonitorService":
-  #  ensure  =>  running,
-  #  start   =>  "cd /psoft/IBMon && sudo nohup IBMonitorService/bin/IBMonitorService /psoft/IBMon/IBMon-configs.yaml &",
-  #  stop    =>  "sudo pkill -f IBMon",
-  #  status  =>  "sudo pgrep -f IBMon",
+  service {"IBMonitorService":
+    ensure  =>  running,
+    start   =>  "cd /psoft/IBMon && nohup IBMonitorService/bin/IBMonitorService /psoft/IBMon/IBMon-configs.yaml &",
+    stop    =>  "pkill -f IBMon",
+    status  =>  "pgrep -f IBMon",
   }
 }
