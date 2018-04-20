@@ -26,18 +26,21 @@ Perform these steps to download the IBMonitorService to your PeopleSoft server:
    * make sure you have read/write access to this directory.
 2. Download the files in this repository and place them in the appropriate puppet directories on your server. Assuming puppet is installed in `/etc/puppet`:
 
-```
+```shell
 /etc/puppet/manifests/ps-umn-ibmonitor.pp
 /etc/puppet/modules/ps-umn-ibmonitor/files/IBMon-configs.yaml
 ```
+
 3. Update `ps-umn-ibmonitor.pp` to your liking. The only items that _need_ to be updated are in a block at the top of the file.
    * set `$downloadDirLin` to the `<BASE_DIR>` directory you created earlier
+   * if desired, set `$downloadSrc` to an alternative location, for example if you want to host IBMonitorService.zip internally
 4. If desired, update `IBMon-configs.yaml` to set your preferences for the IBMonitor utility.
    * updating this file is not required; it works as-delivered with a default configuration
    * all values preceded with "dummy" will be updated automatically using values from your hiera hierarchy
    * see the link at the top of the config file for full documentation on configuring this utility
 5. With root access, use puppet to download, configure, and start the utility:
-```
+
+```shell
 sudo puppet apply /etc/puppet/manifests/ps-umn-ibmonitor.pp --debug --trace
 ```
 
@@ -45,4 +48,3 @@ sudo puppet apply /etc/puppet/manifests/ps-umn-ibmonitor.pp --debug --trace
 
 * Hats off to the crew at the University of Minnesota for creating the IBMonitorService utility!
   * https://github.com/UMN-PeopleSoft/IBMonitorService
-
