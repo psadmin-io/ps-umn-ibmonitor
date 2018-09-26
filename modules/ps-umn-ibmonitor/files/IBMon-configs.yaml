@@ -39,7 +39,7 @@ root:
       publishNode: dummy-publishNode
       subscribeNode: dummy-subscribeNode
       status: '0,5,6'
-      action: Notfy
+      action: Notify
       notifyTo: dummy-notifyTo
       notifyCC: ''
       startTime: '06:00'
