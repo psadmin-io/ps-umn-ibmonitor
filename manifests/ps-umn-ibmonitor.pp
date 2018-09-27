@@ -209,7 +209,7 @@ else {
   # Linx - Start/Stop IBMonitor Service
   service {"IBMonitorService":
     ensure  =>  running,
-    start   =>  "cd $downloadDir && nohup IBMonitorService/bin/IBMonitorService $downloadDir/IBMon-configs.yaml &",
+    start   =>  "cd $downloadDir && nohup IBMonitorService/bin/IBMonitorService $configFile &",
     stop    =>  "pkill -f IBMon",
     status  =>  "pgrep -f IBMon",
   }
